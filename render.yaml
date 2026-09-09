@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: instasave-bot
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: WEBHOOK_BASE_URL
+        sync: false
+      - key: WEBHOOK_SECRET
+        generateValue: true
+      - key: RATE_LIMIT_COUNT
+        value: "8"
+      - key: RATE_LIMIT_WINDOW
+        value: "60"
+      - key: MAX_DOWNLOAD_MB
+        value: "45"
