@@ -108,8 +108,10 @@ def fetch_post_files(shortcode: str, dest_dir: Path) -> tuple[list[Path], str]:
     try:
         post = instaloader.Post.from_shortcode(_loader.context, shortcode)
     except instaloader.exceptions.ConnectionException as e:
+        logger.error("Instagram connection error for shortcode %s: %s", shortcode, e)
         raise FetchError("Instagram is rate-limiting requests right now. Try again shortly.") from e
     except Exception as e:
+        logger.error("Post lookup failed for shortcode %s: %s", shortcode, e)
         raise FetchError("Couldn't find that post. It may be private, deleted, or the link is wrong.") from e
  
     if post.is_video and post.typename != "GraphSidecar":
@@ -119,6 +121,7 @@ def fetch_post_files(shortcode: str, dest_dir: Path) -> tuple[list[Path], str]:
         _loader.dirname_pattern = str(dest_dir)
         _loader.download_post(post, target=str(dest_dir))
     except Exception as e:
+        logger.error("Download failed for shortcode %s: %s", shortcode, e)
         raise FetchError("Failed to download the media for that post.") from e
  
     media_files = sorted(
@@ -292,4 +295,3 @@ def main():
  
 if __name__ == "__main__":
     main()
- 
