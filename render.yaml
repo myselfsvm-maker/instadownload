@@ -1,3 +1,4 @@
+
 services:
   - type: web
     name: instasave-bot
@@ -6,6 +7,8 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: python bot.py
     envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.7"
       - key: BOT_TOKEN
         sync: false
       - key: WEBHOOK_BASE_URL
@@ -18,3 +21,4 @@ services:
         value: "60"
       - key: MAX_DOWNLOAD_MB
         value: "45"
+ 
